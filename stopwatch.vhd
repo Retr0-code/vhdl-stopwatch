@@ -42,6 +42,21 @@ architecture structural of stopwatch is
 		);
 	end component;
 	
+	component display_7seg
+		port (
+			i_num : in std_logic_vector(3 downto 0);
+			i_dp	: in std_logic;
+			o_seg_a : out std_logic;
+			o_seg_b : out std_logic;
+			o_seg_c : out std_logic;
+			o_seg_d : out std_logic;
+			o_seg_e : out std_logic;
+			o_seg_f : out std_logic;
+			o_seg_g : out std_logic;
+			o_seg_dp : out std_logic
+		);
+	end component;
+	
 	signal w_output_digits : std_logic_vector(g_digits_amount * 4 - 1 downto 0);
 	signal w_elapsed_time : unsigned(g_timer_nbit - 1 downto 0);
 	signal w_elapsed_time_converted : unsigned(g_digits_amount * 4 - 1 downto 0);
@@ -55,5 +70,8 @@ begin
 		
 	u_bcd_register : bcd_register
 		port map (i_clk, std_logic_vector(w_elapsed_time_converted), w_output_digits);
+		
+	u_display_7seg_0 : display_7seg
+		port map (w_output_digits(3 downto 0), '0');
 
 end architecture structural;
